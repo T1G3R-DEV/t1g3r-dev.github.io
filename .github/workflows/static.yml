@@ -1,16 +1,12 @@
 name: Deploy to GitHub Pages
 
 on:
-  # Trigger the workflow every time you push to the `main` branch
-  # Using a different branch name? Replace `main` with your branch’s name
   push:
     branches: [main]
-  # Allows you to run this workflow manually from the Actions tab on GitHub.
   workflow_dispatch:
 
-# Allow this job to clone the repo and create a page deployment
 permissions:
-  contents: read
+  contents: write   
   pages: write
   id-token: write
 
@@ -18,15 +14,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout your repository using git
+      - name: Checkout repository
         uses: actions/checkout@v6
-      - name: Install, build, and upload your site output
+
+      - name: Install, build, and upload Astro site
         uses: withastro/action@v5
         with:
-            path: ./dev # The root location of your Astro project inside the repository. (optional)
-            # node-version: 22 # The specific version of Node that should be used to build your site. Defaults to 22. (optional)
-            # package-manager: pnpm@latest # The Node package manager that should be used to install dependencies and build your site. Automatically detected based on your lockfile. (optional)
-            # build-cmd: pnpm run build # The command to run to build your site. Runs the package build script/task by default. (optional)
+          path: ./dev
+
+      - name: Upload build output
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-dist
+          path: dev/dist
 
   deploy:
     needs: build
@@ -34,7 +34,42 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Download build output
+        uses: actions/download-artifact@v4
+        with:
+          name: site-dist
+          path: dist
+
+      - name: Switch to release branch
+        run: |
+          git checkout release || git checkout --orphan release
+          git rm -rf .
+
+      - name: Copy built site into repo
+        run: |
+          cp -r dist/* .
+          rm -rf dist
+
+      - name: Commit and push release branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Release: $(date -u +"%Y-%m-%d %H:%M:%S")" || echo "No changes to commit"
+          git push origin release --force
