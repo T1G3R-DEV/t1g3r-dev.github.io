@@ -16,8 +16,10 @@ import Navigation from '../components/Navigation.astro';
 		<title>{pageTitle} - T1G3R.dev</title>
 	</head>
 	<body>
+		<div id="wrapper">
 		<Navigation />
 		<main><slot /></main>
+		</div>
 		<Footer />
 	</body>
 </html>
@@ -36,7 +38,7 @@ import Navigation from '../components/Navigation.astro';
 		background-color: black;
 	}
 
-	main {
+	main, #wrapper {
 		align-self: center;
 		margin-left: auto;
 		margin-right: auto;
