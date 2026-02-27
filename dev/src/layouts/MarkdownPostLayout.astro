@@ -1,0 +1,27 @@
+---
+import { isAstroComponentFactory } from 'astro/runtime/server/render/astro/factory.js';
+import Layout from '../layouts/Layout.astro';
+const { frontmatter } = Astro.props;
+const pageTitle = frontmatter.title;
+const dateOptions: object = {
+	year: "numeric",
+	month: "long",
+	day: "numeric",
+};
+
+---
+
+<Layout pageTitle={pageTitle}>
+	
+<meta charset="utf-8" />
+<h1>{frontmatter.title}</h1>
+<p>{frontmatter.description}</p>
+<p>Written by {frontmatter.author}, {String(frontmatter.pubDate).split('T')[0]}</p>
+<br>
+<slot />
+<br>
+
+<p>Written by {frontmatter.author}, {String(frontmatter.pubDate).split('T')[0]}</p>
+
+ <p>Tags: {frontmatter.tags.join(", ")}</p>
+</Layout>
