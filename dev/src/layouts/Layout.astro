@@ -2,6 +2,7 @@
 const pageTitle = Astro.props.pageTitle;
 import Footer from '../components/Footer.astro';
 import Navigation from '../components/Navigation.astro';
+import ScrollToTop from "../components/ScrollToTop.astro";
 
 ---
 
@@ -24,7 +25,9 @@ import Navigation from '../components/Navigation.astro';
 
 			<main><slot /></main>
 		</div>
+		<ScrollToTop />
 		<Footer />
+
 	</body>
 </html>
 
