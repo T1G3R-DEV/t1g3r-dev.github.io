@@ -12,7 +12,25 @@ import "bootstrap-icons/font/bootstrap-icons.css";
                 Home
             </a>
         </li>
-        <li class="search">
+
+
+        <!-- Collapsible items -->
+        <li class="nav-item"><a href="/about/">About</a></li>
+        <li class="nav-item"><a href="/blog/">Blog</a></li>
+
+
+
+        <li> 
+            <a href="https://github.com/T1G3R-DEV/" target="_blank">
+                <i class="bi bi-github"></i>
+            </a>
+        </li>
+        <li> 
+            <a href="mailto:contact@t1g3r.dev" target="_blank">
+                <i class="bi bi-envelope"></i>
+            </a>
+        </li>
+        <li>
             <a href="/search/" aria-label="Search">
                 <i class="bi bi-search"></i>
             </a>
@@ -21,10 +39,6 @@ import "bootstrap-icons/font/bootstrap-icons.css";
         <li class="menu-toggle">
             <button class="menutg" aria-label="Toggle Menu">☰</button>
         </li>
-
-        <!-- Collapsible items -->
-        <li class="nav-item"><a href="/about/">About</a></li>
-        <li class="nav-item"><a href="/blog/">Blog</a></li>
 
     </ul>
 </nav>
@@ -116,11 +130,18 @@ import "bootstrap-icons/font/bootstrap-icons.css";
         display: block;
     }
 
-    /* Keep navbar horizontal */
     .nav-list {
-        position: relative;
-        flex-direction: row;
+        display: flex;
+        flex-wrap: wrap;
         align-items: center;
+    }
+
+    /* Keep top-row items fixed */
+    .home,
+    .search,
+    .menu-toggle,
+    .nav-list > li:not(.nav-item) {
+        flex: 0 0 auto;
     }
 
     /* Hide collapsible items */
@@ -128,24 +149,15 @@ import "bootstrap-icons/font/bootstrap-icons.css";
         display: none;
     }
 
-    /* When open → show as dropdown */
+    /* When open → show dropdown items */
     .nav-list.open .nav-item {
         display: block;
+        flex: 0 0 100%;   /* force full row */
         width: 100%;
+        order: 10;        /* ensure they appear after top row */
         background-color: #000111;
     }
 
-    /* Position dropdown below navbar */
-    .nav-list.open .nav-item {
-        position: relative;
-    }
-
-    /* Create dropdown container effect */
-    .nav-list.open {
-        flex-wrap: wrap;
-    }
-
-    /* Make dropdown items full width */
     .nav-list.open .nav-item a {
         display: block;
         width: 100%;
