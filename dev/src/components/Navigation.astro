@@ -1,38 +1,156 @@
+---
+import "bootstrap-icons/font/bootstrap-icons.css";
+---
+
 <nav>
-    <ul>
-        <li><a href="/"><img src="/favicon.svg" height="16px" /> Home</a></li>
-        <li><a href="/about/">About</a></li>
-        <li><a href="/blog/">Blog</a></li>
+    <ul class="nav-list">
+
+        <!-- Always visible -->
+        <li class="home">
+            <a href="/">
+                <img src="/favicon.svg" height="16px" />
+                Home
+            </a>
+        </li>
+        <li class="search">
+            <a href="/search/" aria-label="Search">
+                <i class="bi bi-search"></i>
+            </a>
+        </li>
+        <!-- Hamburger (mobile only) -->
+        <li class="menu-toggle">
+            <button class="menutg" aria-label="Toggle Menu">☰</button>
+        </li>
+
+        <!-- Collapsible items -->
+        <li class="nav-item"><a href="/about/">About</a></li>
+        <li class="nav-item"><a href="/blog/">Blog</a></li>
+
     </ul>
-    
 </nav>
+
+<script>
+    const nav = document.querySelector('.nav-list');
+    const toggleBtn = document.querySelector('.menu-toggle button');
+    const navItems = document.querySelectorAll('.nav-item');
+
+    toggleBtn.addEventListener('click', () => {
+        nav.classList.toggle('open');
+    });
+
+    // Close when clicking a link
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            nav.classList.remove('open');
+        });
+    });
+
+    // Close when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!nav.contains(e.target)) {
+            nav.classList.remove('open');
+        }
+    });
+
+    // Close when resizing to desktop
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) {
+            nav.classList.remove('open');
+        }
+    });
+</script>
 <style>
     nav {
-        background-color: #000111; 
-        position: sticky;
-        top: 0;
-    }
-ul {
-    list-style-type: none;
+    background-color: #000111;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-list {
+    display: flex;
+    align-items: center;
+    list-style: none;
     margin: 0;
     padding: 0;
-    overflow: hidden;
-    background-color: #000111;
 }
 
-ul li {
-    float: left;
+/* Push everything except Home to the right */
+.home {
+    margin-right: auto;
 }
 
-ul li a {
+/* Links */
+.nav-list a {
     display: block;
     color: white;
-    text-align: center;
     padding: 14px 16px;
     text-decoration: none;
 }
 
-ul li a:hover {
+.nav-list a:hover , 
+.menu-toggle button:hover{
     background-color: #002e34;
+}
+
+/* Hide hamburger on desktop */
+.menu-toggle {
+    display: none;
+}
+
+.menu-toggle button {
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+/* ========================= */
+/* Mobile */
+/* ========================= */
+
+@media (max-aspect-ratio: 1/1) {
+
+    .menu-toggle {
+        display: block;
+    }
+
+    /* Keep navbar horizontal */
+    .nav-list {
+        position: relative;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    /* Hide collapsible items */
+    .nav-item {
+        display: none;
+    }
+
+    /* When open → show as dropdown */
+    .nav-list.open .nav-item {
+        display: block;
+        width: 100%;
+        background-color: #000111;
+    }
+
+    /* Position dropdown below navbar */
+    .nav-list.open .nav-item {
+        position: relative;
+    }
+
+    /* Create dropdown container effect */
+    .nav-list.open {
+        flex-wrap: wrap;
+    }
+
+    /* Make dropdown items full width */
+    .nav-list.open .nav-item a {
+        display: block;
+        width: 100%;
+        padding: 14px 16px;
+        box-sizing: border-box;
+    }
 }
 </style>
