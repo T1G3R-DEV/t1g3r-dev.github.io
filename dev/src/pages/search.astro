@@ -1,9 +1,7 @@
 ---
 const pageTitle = "Search"; 
 import Layout from '../layouts/Layout.astro';
-import Navigation from '../components/Navigation.astro';
-
-
+import TagList from '../components/TagList.astro';
 ---
 
 <Layout pageTitle={pageTitle}>
@@ -11,4 +9,6 @@ import Navigation from '../components/Navigation.astro';
 	<h1>Search not available</h1>
     <p>Search is currently still in devellopment and therefore not available!</p>
 
+    Tags:<br><br>
+    <TagList />
 </Layout>

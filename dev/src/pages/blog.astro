@@ -1,6 +1,8 @@
 ---
 const pageTitle = "Blog"; 
 import Layout from '../layouts/Layout.astro';
+import BlogPost from '../../components/BlogPostCard.astro';
+
 const allPosts = Object.values(import.meta.glob('./posts/*.md', { eager: true }));
 ---
 <Layout pageTitle={pageTitle}>

@@ -23,5 +23,17 @@ const dateOptions: object = {
 
 <p>Written by {frontmatter.author}, {String(frontmatter.pubDate).split('T')[0]}</p>
 
- <p>Tags: {frontmatter.tags.join(", ")}</p>
+<p>
+  Tags:
+  {
+    frontmatter.tags.map((tag, index) => (
+      <>
+        <a href={`/tags/${tag}/`}>
+        	{tag}
+        </a>
+        {index < frontmatter.tags.length - 1 ? ", " : ""}
+      </>
+    ))
+  }
+</p>
 </Layout>
